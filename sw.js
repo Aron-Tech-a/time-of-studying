@@ -1,6 +1,6 @@
 // Service Worker for 番茄钟应用 PWA 支持
 
-const CACHE_NAME = "time-of-studying-v1";
+const CACHE_NAME = "time-of-studying-v3";
 const STATIC_CACHE_URLS = [
   "/",
   "/index.html",

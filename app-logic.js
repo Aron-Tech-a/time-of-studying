@@ -15,6 +15,7 @@
       projects: [
         { id: 1, name: "\u5b66\u4e60", totalSeconds: 0, todaySeconds: 0 },
       ],
+      history: [],
       activeProjectId: 1,
       isRunning: false,
       runningSince: null,
@@ -93,6 +94,8 @@
 
       if (Array.isArray(raw.focus.history)) {
         state.focus.history = raw.focus.history.map((entry, index) => normalizeHistoryEntry(entry, index));
+      } else {
+        state.focus.history = Array.isArray(state.focus.history) ? state.focus.history : [];
       }
 
       if (Array.isArray(raw.focus.projects) && raw.focus.projects.length) {
