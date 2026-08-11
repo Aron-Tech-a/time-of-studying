@@ -32,21 +32,21 @@
       /* CSS 变量定义 - 浅色主题 */
       :root {
         /* 背景色 */
-        --bg-primary: #f5f5f5;
-        --bg-secondary: #fff;
-        --bg-tertiary: #f0f0f0;
+        --bg-primary: #0f172a;
+        --bg-secondary: #111c2e;
+        --bg-tertiary: #14243b;
 
         /* 文字颜色 */
-        --text-primary: #333;
-        --text-secondary: #4caf50;
-        --text-accent-1: #ff5722;
-        --text-accent-2: #2196f3;
+        --text-primary: #e6eefc;
+        --text-secondary: #5eead4;
+        --text-accent-1: #fb923c;
+        --text-accent-2: #60a5fa;
 
         /* 边框和进度条 */
-        --border-primary: #e0e0e0;
+        --border-primary: #23364f;
 
         /* 阴影 */
-        --shadow-primary: rgba(0, 0, 0, 0.1);
+        --shadow-primary: rgba(0, 0, 0, 0.35);
 
         /* 透明度 */
         --opacity-disabled: 0.7;
@@ -57,25 +57,18 @@
         --transition-progress: width 1s linear, stroke-dashoffset 1s linear;
       }
 
-      /* 深色主题变量 */
-      @media (prefers-color-scheme: dark) {
+      /* 浅色主题变量 */
+      @media (prefers-color-scheme: light) {
         :root {
-          /* 背景色 */
-          --bg-primary: #1a1a1a;
-          --bg-secondary: #2d2d2d;
-          --bg-tertiary: #3a3a3a;
-
-          /* 文字颜色 */
-          --text-primary: #e0e0e0;
-          --text-secondary: #66bb6a;
-          --text-accent-1: #ff7043;
-          --text-accent-2: #42a5f5;
-
-          /* 边框和进度条 */
-          --border-primary: #4a4a4a;
-
-          /* 阴影 */
-          --shadow-primary: rgba(0, 0, 0, 0.3);
+          --bg-primary: #f3f6fb;
+          --bg-secondary: #ffffff;
+          --bg-tertiary: #eef3f8;
+          --text-primary: #1f2937;
+          --text-secondary: #14b8a6;
+          --text-accent-1: #f97316;
+          --text-accent-2: #3b82f6;
+          --border-primary: #d7e2ee;
+          --shadow-primary: rgba(15, 23, 42, 0.08);
         }
       }
 
@@ -89,7 +82,10 @@
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
           sans-serif;
-        background-color: var(--bg-primary);
+        background:
+          radial-gradient(circle at top left, rgba(96, 165, 250, 0.16), transparent 28%),
+          radial-gradient(circle at bottom right, rgba(94, 234, 212, 0.16), transparent 24%),
+          var(--bg-primary);
         color: var(--text-primary);
         height: 100vh;
         overflow: hidden;
@@ -138,14 +134,15 @@
       }
 
       .focus-panel {
-        background-color: var(--bg-secondary);
-        border-radius: 8px;
+        background: linear-gradient(145deg, rgba(17, 28, 46, 0.98), rgba(20, 36, 59, 0.95));
+        border-radius: 16px;
         padding: 20px;
-        box-shadow: 0 2px 4px var(--shadow-primary);
+        box-shadow: 0 16px 34px rgba(0, 0, 0, 0.28);
         transition: var(--transition-base);
         display: flex;
         flex-direction: column;
         gap: 12px;
+        border: 1px solid rgba(96, 165, 250, 0.16);
       }
 
       .focus-panel.is-running {
@@ -187,9 +184,14 @@
         gap: 8px;
         padding: 10px;
         border-radius: 12px;
-        border: 1px solid var(--border-primary);
-        background: var(--bg-tertiary);
+        border: 1px solid rgba(96, 165, 250, 0.14);
+        background: linear-gradient(145deg, rgba(20, 36, 59, 0.98), rgba(16, 27, 44, 0.95));
         transition: var(--transition-base);
+      }
+
+      .project-item:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
       }
 
       .project-item.active {
@@ -232,6 +234,20 @@
         background: rgba(76, 175, 80, 0.16);
         color: var(--text-secondary);
         animation: badgePulse 1.3s ease-in-out infinite;
+      }
+
+      .project-status-light {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #c7c7c7;
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4);
+        flex-shrink: 0;
+      }
+
+      .project-status-light.is-running {
+        background: #4caf50;
+        animation: pulseLight 1.4s infinite;
       }
 
       @keyframes badgePulse {
@@ -294,11 +310,12 @@
         display: none;
         margin-top: 8px;
         padding: 12px;
-        border-radius: 10px;
-        background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(76, 175, 80, 0.08));
-        border: 1px solid rgba(76, 175, 80, 0.12);
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(94, 234, 212, 0.06));
+        border: 1px solid rgba(94, 234, 212, 0.12);
         color: var(--text-primary);
         font-size: 0.78rem;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
       }
 
       .project-item.expanded .project-details {
@@ -311,12 +328,41 @@
         gap: 8px;
       }
 
+      .project-trend {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(96, 165, 250, 0.12);
+      }
+
+      .project-trend-title {
+        font-size: 0.72rem;
+        opacity: 0.75;
+        margin-bottom: 6px;
+      }
+
+      .project-trend-bars {
+        display: flex;
+        align-items: flex-end;
+        gap: 6px;
+        height: 54px;
+      }
+
+      .project-trend-bar {
+        flex: 1;
+        border-radius: 999px 999px 4px 4px;
+        background: linear-gradient(180deg, var(--text-accent-2), var(--text-secondary));
+        min-height: 6px;
+        opacity: 0.85;
+      }
+
       .project-detail-card {
         padding: 8px 10px;
         border-radius: 8px;
-        background: var(--bg-primary);
-        border: 1px solid var(--border-primary);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(96, 165, 250, 0.12);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
       }
 
       .project-detail-card .label {
@@ -338,9 +384,9 @@
         width: 100%;
         height: 8px;
         border-radius: 999px;
-        background: var(--bg-primary);
+        background: rgba(255,255,255,0.08);
         overflow: hidden;
-        border: 1px solid var(--border-primary);
+        border: 1px solid rgba(96, 165, 250, 0.12);
       }
 
       .project-progress-fill {
@@ -369,9 +415,9 @@
         border-radius: 50%;
         display: grid;
         place-items: center;
-        background: conic-gradient(var(--text-secondary) 0deg, var(--text-accent-2) 0deg, var(--bg-primary) 0deg);
+        background: conic-gradient(var(--text-secondary) 0deg, var(--text-accent-2) 0deg, rgba(255,255,255,0.08) 0deg);
         position: relative;
-        box-shadow: inset 0 0 0 6px rgba(255,255,255,0.2);
+        box-shadow: inset 0 0 0 6px rgba(255,255,255,0.08), 0 8px 18px rgba(76, 175, 80, 0.12);
       }
 
       .project-circle::before {
@@ -379,7 +425,7 @@
         position: absolute;
         inset: 8px;
         border-radius: 50%;
-        background: var(--bg-secondary);
+        background: rgba(17, 28, 46, 0.98);
       }
 
       .project-circle .inner {
@@ -398,6 +444,17 @@
       .project-actions {
         display: flex;
         gap: 6px;
+      }
+
+      .project-actions .btn {
+        border-radius: 8px;
+        padding: 6px 7px;
+        transition: transform 0.2s ease, background 0.2s ease;
+      }
+
+      .project-actions .btn:hover {
+        transform: translateY(-1px);
+        background: rgba(76, 175, 80, 0.12);
       }
 
       .inline-input {
@@ -427,13 +484,14 @@
 
       .focus-summary-card {
         padding: 12px;
-        border-radius: 10px;
-        background: linear-gradient(135deg, rgba(76, 175, 80, 0.16), rgba(33, 150, 243, 0.12));
-        border: 1px solid rgba(76, 175, 80, 0.2);
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(94, 234, 212, 0.16), rgba(96, 165, 250, 0.16));
+        border: 1px solid rgba(94, 234, 212, 0.2);
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 8px;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
       }
 
       .focus-summary-card .label {
@@ -450,32 +508,38 @@
       .stats-tabs {
         display: flex;
         gap: 8px;
+        padding: 4px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(96, 165, 250, 0.14);
       }
 
       .stats-tab {
         flex: 1;
         padding: 7px 10px;
         border-radius: 999px;
-        border: 1px solid var(--border-primary);
-        background: var(--bg-primary);
+        border: none;
+        background: transparent;
         color: inherit;
         cursor: pointer;
         font-size: 0.9rem;
+        transition: var(--transition-base);
       }
 
       .stats-tab.active {
-        background: var(--text-secondary);
+        background: linear-gradient(135deg, var(--text-secondary), var(--text-accent-2));
         color: #fff;
-        border-color: var(--text-secondary);
+        box-shadow: 0 4px 10px rgba(76, 175, 80, 0.16);
       }
 
       .stats-display {
-        padding: 8px 10px;
-        border-radius: 8px;
-        background: rgba(33, 150, 243, 0.12);
+        padding: 10px 12px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, rgba(33, 150, 243, 0.16), rgba(76, 175, 80, 0.12));
         color: var(--text-accent-2);
         text-align: center;
         font-weight: 700;
+        border: 1px solid rgba(33, 150, 243, 0.14);
       }
 
       .focus-actions {
@@ -1703,6 +1767,7 @@
               <div class="project-main">
                 <div class="project-header">
                   <div class="project-name-row">
+                    <span class="project-status-light${this.state.focus.isRunning && isActive ? " is-running" : ""}"></span>
                     <span class="project-badge${this.state.focus.isRunning && isActive ? " is-running" : ""}">${badgeText}</span>
                     <div class="name">${project.name}</div>
                   </div>
@@ -1725,6 +1790,12 @@
                     <div class="project-detail-card">
                       <div class="label">今日</div>
                       <div class="value">${AppLogic.formatDuration(project.todaySeconds)}</div>
+                    </div>
+                  </div>
+                  <div class="project-trend">
+                    <div class="project-trend-title">专注时长趋势</div>
+                    <div class="project-trend-bars">
+                      ${[20, 35, 28, 40, 32, 25].map((height) => `<div class="project-trend-bar" style="height: ${height}%"></div>`).join("")}
                     </div>
                   </div>
                   <div class="project-progress-wrap">
