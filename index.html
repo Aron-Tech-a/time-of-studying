@@ -201,6 +201,37 @@
         box-shadow: inset 0 0 0 1px rgba(76, 175, 80, 0.14);
       }
 
+      .project-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: rgba(33, 150, 243, 0.12);
+        color: var(--text-accent-2);
+        font-size: 0.72rem;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .project-badge.is-running {
+        background: rgba(76, 175, 80, 0.16);
+        color: var(--text-secondary);
+        animation: badgePulse 1.3s ease-in-out infinite;
+      }
+
+      @keyframes badgePulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.03);
+          opacity: 0.95;
+        }
+      }
+
       .project-toggle {
         border: none;
         background: transparent;
@@ -223,10 +254,20 @@
         cursor: pointer;
       }
 
+      .project-name-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+      }
+
       .project-item .name {
         flex: 1;
         text-align: left;
         font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .project-item .meta {
@@ -238,17 +279,67 @@
       .project-details {
         display: none;
         margin-top: 8px;
-        padding-top: 8px;
-        border-top: 1px dashed var(--border-primary);
+        padding: 10px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.45);
+        border: 1px solid rgba(76, 175, 80, 0.12);
         color: var(--text-primary);
-        opacity: 0.8;
         font-size: 0.78rem;
-        justify-content: space-between;
-        gap: 8px;
       }
 
       .project-item.expanded .project-details {
-        display: flex;
+        display: block;
+      }
+
+      .project-detail-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .project-detail-card {
+        padding: 8px 10px;
+        border-radius: 6px;
+        background: var(--bg-primary);
+        border: 1px solid var(--border-primary);
+      }
+
+      .project-detail-card .label {
+        font-size: 0.7rem;
+        opacity: 0.7;
+        margin-bottom: 2px;
+      }
+
+      .project-detail-card .value {
+        font-weight: 700;
+        color: var(--text-secondary);
+      }
+
+      .project-progress-wrap {
+        margin-top: 8px;
+      }
+
+      .project-progress {
+        width: 100%;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--bg-primary);
+        overflow: hidden;
+        border: 1px solid var(--border-primary);
+      }
+
+      .project-progress-fill {
+        height: 100%;
+        width: 0;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--text-secondary), var(--text-accent-2));
+        transition: width 0.8s ease;
+      }
+
+      .project-progress-label {
+        margin-top: 4px;
+        font-size: 0.72rem;
+        opacity: 0.8;
       }
 
       .project-actions {
@@ -1548,16 +1639,39 @@
             const item = document.createElement("div");
             item.className = `project-item${isActive ? " active" : ""}${this.state.focus.isRunning && isActive ? " running" : ""}`;
             item.classList.toggle("expanded", isActive);
+            const progressSeconds = this.state.focus.isRunning && isActive
+              ? this.state.focus.currentSessionSeconds
+              : project.todaySeconds;
+            const progressTargetSeconds = 25 * 60;
+            const progressRatio = Math.min(1, Math.max(0, progressSeconds / progressTargetSeconds));
+            const badgeText = this.state.focus.isRunning && isActive ? "进行中" : isActive ? "当前任务" : "任务";
             item.innerHTML = `
               <button class="project-toggle" type="button" aria-label="展开详情">▾</button>
               <div class="project-main">
                 <div class="project-header">
-                  <div class="name">${project.name}</div>
+                  <div class="project-name-row">
+                    <span class="project-badge${this.state.focus.isRunning && isActive ? " is-running" : ""}">${badgeText}</span>
+                    <div class="name">${project.name}</div>
+                  </div>
                   <div class="meta">${AppLogic.formatDuration(displaySeconds)}</div>
                 </div>
                 <div class="project-details">
-                  <span>累计 ${AppLogic.formatDuration(project.totalSeconds)}</span>
-                  <span>今日 ${AppLogic.formatDuration(project.todaySeconds)}</span>
+                  <div class="project-detail-grid">
+                    <div class="project-detail-card">
+                      <div class="label">累计</div>
+                      <div class="value">${AppLogic.formatDuration(project.totalSeconds)}</div>
+                    </div>
+                    <div class="project-detail-card">
+                      <div class="label">今日</div>
+                      <div class="value">${AppLogic.formatDuration(project.todaySeconds)}</div>
+                    </div>
+                  </div>
+                  <div class="project-progress-wrap">
+                    <div class="project-progress">
+                      <div class="project-progress-fill" style="width: ${Math.round(progressRatio * 100)}%"></div>
+                    </div>
+                    <div class="project-progress-label">${Math.round(progressRatio * 100)}% • 目标 25 分钟</div>
+                  </div>
                 </div>
               </div>
             `;
