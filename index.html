@@ -186,9 +186,10 @@
         align-items: flex-start;
         gap: 8px;
         padding: 10px;
-        border-radius: 8px;
+        border-radius: 12px;
         border: 1px solid var(--border-primary);
         background: var(--bg-tertiary);
+        transition: var(--transition-base);
       }
 
       .project-item.active {
@@ -199,6 +200,19 @@
       .project-item.running {
         border-color: rgba(76, 175, 80, 0.3);
         box-shadow: inset 0 0 0 1px rgba(76, 175, 80, 0.14);
+        animation: taskBreath 1.6s ease-in-out infinite;
+      }
+
+      @keyframes taskBreath {
+        0%,
+        100% {
+          transform: scale(1);
+          box-shadow: inset 0 0 0 1px rgba(76, 175, 80, 0.14);
+        }
+        50% {
+          transform: scale(1.01);
+          box-shadow: inset 0 0 0 2px rgba(76, 175, 80, 0.2), 0 8px 18px rgba(76, 175, 80, 0.12);
+        }
       }
 
       .project-badge {
@@ -279,9 +293,9 @@
       .project-details {
         display: none;
         margin-top: 8px;
-        padding: 10px;
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.45);
+        padding: 12px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(76, 175, 80, 0.08));
         border: 1px solid rgba(76, 175, 80, 0.12);
         color: var(--text-primary);
         font-size: 0.78rem;
@@ -299,14 +313,15 @@
 
       .project-detail-card {
         padding: 8px 10px;
-        border-radius: 6px;
+        border-radius: 8px;
         background: var(--bg-primary);
         border: 1px solid var(--border-primary);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
       }
 
       .project-detail-card .label {
         font-size: 0.7rem;
-        opacity: 0.7;
+        opacity: 0.72;
         margin-bottom: 2px;
       }
 
@@ -316,7 +331,7 @@
       }
 
       .project-progress-wrap {
-        margin-top: 8px;
+        margin-top: 10px;
       }
 
       .project-progress {
@@ -340,6 +355,44 @@
         margin-top: 4px;
         font-size: 0.72rem;
         opacity: 0.8;
+      }
+
+      .project-circle-wrap {
+        display: flex;
+        justify-content: center;
+        margin: 8px 0 10px;
+      }
+
+      .project-circle {
+        width: 86px;
+        height: 86px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: conic-gradient(var(--text-secondary) 0deg, var(--text-accent-2) 0deg, var(--bg-primary) 0deg);
+        position: relative;
+        box-shadow: inset 0 0 0 6px rgba(255,255,255,0.2);
+      }
+
+      .project-circle::before {
+        content: "";
+        position: absolute;
+        inset: 8px;
+        border-radius: 50%;
+        background: var(--bg-secondary);
+      }
+
+      .project-circle .inner {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        font-size: 0.72rem;
+      }
+
+      .project-circle .inner strong {
+        display: block;
+        font-size: 1rem;
+        color: var(--text-secondary);
       }
 
       .project-actions {
@@ -1656,6 +1709,14 @@
                   <div class="meta">${AppLogic.formatDuration(displaySeconds)}</div>
                 </div>
                 <div class="project-details">
+                  <div class="project-circle-wrap">
+                    <div class="project-circle" style="background: conic-gradient(var(--text-secondary) ${Math.round(progressRatio * 360)}deg, var(--text-accent-2) ${Math.round(progressRatio * 360)}deg, var(--bg-primary) 0deg);">
+                      <div class="inner">
+                        <div>进度</div>
+                        <strong>${Math.round(progressRatio * 100)}%</strong>
+                      </div>
+                    </div>
+                  </div>
                   <div class="project-detail-grid">
                     <div class="project-detail-card">
                       <div class="label">累计</div>
@@ -1670,7 +1731,7 @@
                     <div class="project-progress">
                       <div class="project-progress-fill" style="width: ${Math.round(progressRatio * 100)}%"></div>
                     </div>
-                    <div class="project-progress-label">${Math.round(progressRatio * 100)}% • 目标 25 分钟</div>
+                    <div class="project-progress-label">目标 25 分钟 • 当前 ${AppLogic.formatDuration(progressSeconds)}</div>
                   </div>
                 </div>
               </div>
