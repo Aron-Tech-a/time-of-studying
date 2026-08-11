@@ -148,6 +148,24 @@
         gap: 12px;
       }
 
+      .focus-panel.is-running {
+        border: 1px solid rgba(76, 175, 80, 0.24);
+        box-shadow: 0 0 0 1px rgba(76, 175, 80, 0.18), 0 12px 28px rgba(76, 175, 80, 0.14);
+        animation: focusPulse 1.6s ease-in-out infinite;
+      }
+
+      @keyframes focusPulse {
+        0%,
+        100% {
+          transform: translateY(0);
+          box-shadow: 0 0 0 1px rgba(76, 175, 80, 0.16), 0 10px 24px rgba(76, 175, 80, 0.12);
+        }
+        50% {
+          transform: translateY(-2px);
+          box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.22), 0 16px 30px rgba(76, 175, 80, 0.2);
+        }
+      }
+
       .panel-title {
         display: flex;
         justify-content: space-between;
@@ -165,11 +183,10 @@
 
       .project-item {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 10px;
+        align-items: flex-start;
+        gap: 8px;
         padding: 10px;
-        border-radius: 6px;
+        border-radius: 8px;
         border: 1px solid var(--border-primary);
         background: var(--bg-tertiary);
       }
@@ -179,14 +196,59 @@
         background: rgba(76, 175, 80, 0.15);
       }
 
+      .project-item.running {
+        border-color: rgba(76, 175, 80, 0.3);
+        box-shadow: inset 0 0 0 1px rgba(76, 175, 80, 0.14);
+      }
+
+      .project-toggle {
+        border: none;
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+        padding: 2px 4px;
+        font-size: 0.9rem;
+      }
+
+      .project-main {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .project-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+      }
+
       .project-item .name {
         flex: 1;
         text-align: left;
+        font-weight: 600;
       }
 
       .project-item .meta {
         font-size: 0.8rem;
         opacity: 0.8;
+        white-space: nowrap;
+      }
+
+      .project-details {
+        display: none;
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px dashed var(--border-primary);
+        color: var(--text-primary);
+        opacity: 0.8;
+        font-size: 0.78rem;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .project-item.expanded .project-details {
+        display: flex;
       }
 
       .project-actions {
@@ -204,12 +266,145 @@
       }
 
       .status-bar {
-        padding: 8px 10px;
-        border-radius: 6px;
+        padding: 10px 12px;
+        border-radius: 8px;
         background: rgba(33, 150, 243, 0.12);
         color: var(--text-accent-2);
         text-align: center;
         font-weight: 600;
+        border: 1px solid rgba(33, 150, 243, 0.2);
+      }
+
+      .status-bar.is-running {
+        background: rgba(76, 175, 80, 0.14);
+        color: var(--text-secondary);
+        border-color: rgba(76, 175, 80, 0.24);
+      }
+
+      .focus-summary-card {
+        padding: 12px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.16), rgba(33, 150, 243, 0.12));
+        border: 1px solid rgba(76, 175, 80, 0.2);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .focus-summary-card .label {
+        font-size: 0.8rem;
+        opacity: 0.8;
+      }
+
+      .focus-summary-card .value {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-secondary);
+      }
+
+      .stats-tabs {
+        display: flex;
+        gap: 8px;
+      }
+
+      .stats-tab {
+        flex: 1;
+        padding: 7px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--border-primary);
+        background: var(--bg-primary);
+        color: inherit;
+        cursor: pointer;
+        font-size: 0.9rem;
+      }
+
+      .stats-tab.active {
+        background: var(--text-secondary);
+        color: #fff;
+        border-color: var(--text-secondary);
+      }
+
+      .stats-display {
+        padding: 8px 10px;
+        border-radius: 8px;
+        background: rgba(33, 150, 243, 0.12);
+        color: var(--text-accent-2);
+        text-align: center;
+        font-weight: 700;
+      }
+
+      .focus-actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .focus-control-btn {
+        flex: 1;
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-size: 0.95rem;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid var(--border-primary);
+        background: var(--bg-primary);
+      }
+
+      .focus-control-btn.is-running {
+        background: rgba(76, 175, 80, 0.16);
+        color: var(--text-secondary);
+        border-color: rgba(76, 175, 80, 0.24);
+      }
+
+      .focus-control-btn.is-disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .focus-control-btn.is-danger {
+        background: rgba(255, 87, 34, 0.12);
+        color: var(--text-accent-1);
+        border-color: rgba(255, 87, 34, 0.2);
+      }
+
+      .history-panel {
+        border-top: 1px solid var(--border-primary);
+        padding-top: 10px;
+      }
+
+      .history-title {
+        font-size: 0.8rem;
+        opacity: 0.75;
+        margin-bottom: 6px;
+      }
+
+      .recent-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        max-height: 140px;
+        overflow: auto;
+      }
+
+      .recent-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 8px;
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border-primary);
+        font-size: 0.8rem;
+        opacity: 0.95;
+      }
+
+      .recent-item strong {
+        font-size: 0.82rem;
+        color: var(--text-primary);
       }
 
       .stats-summary {
@@ -591,14 +786,31 @@
 
         <div class="focus-panel">
           <div class="panel-title">
-            <span>🧩 &#x4E13;&#x6CE8;&#x9879;&#x76EE;</span>
-            <button class="btn add-project-btn">➕</button>
+            <span>🧩 专注项目</span>
+            <button class="btn add-project-btn" title="新建任务">➕</button>
           </div>
-          <div class="status-bar" id="focus-status">&#x5F53;&#x524D;&#x672A;&#x5F00;&#x59CB;&#x4E13;&#x6CE8;</div>
+          <div class="status-bar" id="focus-status">当前未开始专注</div>
+          <div class="focus-summary-card">
+            <div>
+              <div class="label">今日累计时长</div>
+              <div class="value" id="today-focus-total">0:00</div>
+            </div>
+            <div class="muted">专注更清晰</div>
+          </div>
+          <div class="stats-tabs" role="tablist">
+            <button class="stats-tab active" data-period="day" type="button">今日</button>
+            <button class="stats-tab" data-period="week" type="button">本周</button>
+            <button class="stats-tab" data-period="month" type="button">本月</button>
+          </div>
+          <div class="stats-display" id="focus-stats-value">0:00</div>
           <div class="project-list" id="project-list"></div>
-          <div class="controls">
-            <button class="btn start-focus-btn" title="开始专注">▶️</button>
-            <button class="btn stop-focus-btn" title="结束本次专注">⏹️</button>
+          <div class="focus-actions">
+            <button class="btn focus-control-btn start-focus-btn" title="开始专注">▶ 开始</button>
+            <button class="btn focus-control-btn stop-focus-btn" title="结束本次专注">⏹ 结束</button>
+          </div>
+          <div class="history-panel">
+            <div class="history-title">最近记录</div>
+            <div class="recent-list" id="focus-history"></div>
           </div>
         </div>
 
@@ -1181,15 +1393,13 @@
           this.historyEl = document.getElementById("focus-history");
           this.focusPanel = document.querySelector(".focus-panel");
           this.timerContainer = document.querySelector(".timer-container");
-          this.statsEls = {
-            day: document.querySelector('[data-period="day"]'),
-            week: document.querySelector('[data-period="week"]'),
-            month: document.querySelector('[data-period="month"]'),
-            year: document.querySelector('[data-period="year"]'),
-          };
+          this.periodBtns = Array.from(document.querySelectorAll(".stats-tab"));
+          this.statsValueEl = document.getElementById("focus-stats-value");
+          this.selectedPeriod = "day";
           this.startBtn = document.querySelector(".start-focus-btn");
           this.stopBtn = document.querySelector(".stop-focus-btn");
           this.addBtn = document.querySelector(".add-project-btn");
+          this.todayTotalEl = document.getElementById("today-focus-total");
           this.modeBtns = Array.from(document.querySelectorAll(".mode-btn"));
           this.tickHandle = null;
           this.init();
@@ -1262,6 +1472,13 @@
               this.render();
             });
           });
+
+          this.periodBtns.forEach((btn) => {
+            btn.addEventListener("click", () => {
+              this.selectedPeriod = btn.dataset.period || "day";
+              this.render();
+            });
+          });
         }
 
         startTick() {
@@ -1329,12 +1546,27 @@
               ? this.state.focus.currentSessionSeconds
               : project.totalSeconds;
             const item = document.createElement("div");
-            item.className = `project-item${isActive ? " active" : ""}`;
+            item.className = `project-item${isActive ? " active" : ""}${this.state.focus.isRunning && isActive ? " running" : ""}`;
+            item.classList.toggle("expanded", isActive);
             item.innerHTML = `
-              <div class="name">${project.name}</div>
-              <div class="meta">${AppLogic.formatDuration(displaySeconds)}</div>
+              <button class="project-toggle" type="button" aria-label="展开详情">▾</button>
+              <div class="project-main">
+                <div class="project-header">
+                  <div class="name">${project.name}</div>
+                  <div class="meta">${AppLogic.formatDuration(displaySeconds)}</div>
+                </div>
+                <div class="project-details">
+                  <span>累计 ${AppLogic.formatDuration(project.totalSeconds)}</span>
+                  <span>今日 ${AppLogic.formatDuration(project.todaySeconds)}</span>
+                </div>
+              </div>
             `;
-            item.addEventListener("click", async () => {
+            const toggleBtn = item.querySelector(".project-toggle");
+            toggleBtn.addEventListener("click", (event) => {
+              event.stopPropagation();
+              item.classList.toggle("expanded");
+            });
+            item.querySelector(".project-header").addEventListener("click", async () => {
               if (this.state.focus.isRunning && this.state.focus.activeProjectId !== project.id) {
                 const current = AppLogic.getActiveProject(this.state);
                 const confirmed = await showAppConfirm(`当前任务“${current?.name || "未命名"}”已在累计，切换将结束本次记录，是否继续？`);
@@ -1388,6 +1620,10 @@
           });
 
           const active = AppLogic.getActiveProject(this.state);
+          const todayTotalSeconds = this.state.focus.projects.reduce((sum, project) => sum + (Number(project.todaySeconds) || 0), 0);
+          if (this.todayTotalEl) {
+            this.todayTotalEl.textContent = AppLogic.formatDuration(todayTotalSeconds);
+          }
           if (active) {
             const elapsedSeconds = this.state.focus.isRunning
               ? this.state.focus.currentSessionSeconds
@@ -1399,25 +1635,26 @@
             this.statusEl.textContent = "当前未开始专注";
           }
 
+          this.statusEl.classList.toggle("is-running", this.state.focus.isRunning);
+          if (this.focusPanel) {
+            this.focusPanel.classList.toggle("is-running", this.state.focus.isRunning);
+          }
+
+          this.periodBtns.forEach((btn) => {
+            btn.classList.toggle("active", btn.dataset.period === this.selectedPeriod);
+          });
+
           const summary = AppLogic.summarizeFocusHistory(this.state.focus.history, {
             referenceDate: new Date(),
             projectId: active ? active.id : null,
           });
-          if (this.statsEls.day) {
-            this.statsEls.day.textContent = AppLogic.formatDuration(summary.day);
-          }
-          if (this.statsEls.week) {
-            this.statsEls.week.textContent = AppLogic.formatDuration(summary.week);
-          }
-          if (this.statsEls.month) {
-            this.statsEls.month.textContent = AppLogic.formatDuration(summary.month);
-          }
-          if (this.statsEls.year) {
-            this.statsEls.year.textContent = AppLogic.formatDuration(summary.year);
+          const selectedSummary = summary[this.selectedPeriod] || 0;
+          if (this.statsValueEl) {
+            this.statsValueEl.textContent = AppLogic.formatDuration(selectedSummary);
           }
 
           if (this.historyEl) {
-            const recentRecords = (this.state.focus.history || []).slice(0, 5);
+            const recentRecords = (this.state.focus.history || []).slice(0, 6);
             this.historyEl.innerHTML = recentRecords.length
               ? recentRecords.map((entry) => {
                   const timeLabel = entry.startedAt
@@ -1428,17 +1665,22 @@
                         minute: "2-digit",
                       })
                     : "刚刚";
-                  return `<div class="recent-item"><span>${entry.projectName || "项目"}</span><span>${AppLogic.formatDuration(entry.durationSeconds)} · ${timeLabel}</span></div>`;
+                  return `<div class="recent-item"><div><strong>${entry.projectName || "项目"}</strong><div>${AppLogic.formatDuration(entry.durationSeconds)}</div></div><span>${timeLabel}</span></div>`;
                 }).join("")
-              : '<div class="recent-item"><span>暂无专注记录</span><span>—</span></div>';
+              : '<div class="recent-item"><div><strong>暂无专注记录</strong><div>开始计时后会显示这里</div></div><span>—</span></div>';
           }
 
-          if (this.state.focus.isRunning) {
-            this.startBtn.textContent = "⏸️";
-            this.stopBtn.textContent = "⏹️";
-          } else {
-            this.startBtn.textContent = "▶️";
-            this.stopBtn.textContent = "⏹️";
+          if (this.startBtn) {
+            this.startBtn.classList.toggle("is-running", this.state.focus.isRunning);
+            this.startBtn.classList.toggle("is-disabled", !active);
+            this.startBtn.textContent = this.state.focus.isRunning ? "⏸ 暂停" : "▶ 开始";
+            this.startBtn.title = this.state.focus.isRunning ? "暂停当前专注" : "开始专注";
+          }
+          if (this.stopBtn) {
+            this.stopBtn.classList.toggle("is-danger", this.state.focus.isRunning);
+            this.stopBtn.classList.toggle("is-disabled", !this.state.focus.isRunning);
+            this.stopBtn.textContent = this.state.focus.isRunning ? "⏹ 结束" : "⏹ 结束";
+            this.stopBtn.title = this.state.focus.isRunning ? "结束本次专注" : "结束本次专注";
           }
         }
       }
