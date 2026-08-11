@@ -104,7 +104,7 @@
         flex-direction: column;
         padding: 20px;
         gap: 20px;
-        overflow: scroll;
+        overflow: auto;
       }
 
       /* 标题 */
@@ -135,6 +135,199 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+      }
+
+      .focus-panel {
+        background-color: var(--bg-secondary);
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px var(--shadow-primary);
+        transition: var(--transition-base);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .panel-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: bold;
+      }
+
+      .project-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-height: 180px;
+        overflow: auto;
+      }
+
+      .project-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid var(--border-primary);
+        background: var(--bg-tertiary);
+      }
+
+      .project-item.active {
+        border-color: var(--text-secondary);
+        background: rgba(76, 175, 80, 0.15);
+      }
+
+      .project-item .name {
+        flex: 1;
+        text-align: left;
+      }
+
+      .project-item .meta {
+        font-size: 0.8rem;
+        opacity: 0.8;
+      }
+
+      .project-actions {
+        display: flex;
+        gap: 6px;
+      }
+
+      .inline-input {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid var(--border-primary);
+        border-radius: 6px;
+        background: var(--bg-primary);
+        color: inherit;
+      }
+
+      .status-bar {
+        padding: 8px 10px;
+        border-radius: 6px;
+        background: rgba(33, 150, 243, 0.12);
+        color: var(--text-accent-2);
+        text-align: center;
+        font-weight: 600;
+      }
+
+      .stats-summary {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .stat-card {
+        padding: 10px;
+        border-radius: 6px;
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border-primary);
+      }
+
+      .stat-card .label {
+        font-size: 0.75rem;
+        opacity: 0.8;
+      }
+
+      .stat-card .value {
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-top: 4px;
+      }
+
+      .recent-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        max-height: 120px;
+        overflow: auto;
+      }
+
+      .recent-item {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        font-size: 0.8rem;
+        opacity: 0.9;
+      }
+
+      .mode-switch {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+      }
+
+      .mode-btn {
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--border-primary);
+        background: var(--bg-primary);
+        color: inherit;
+      }
+
+      .mode-btn.active {
+        background: var(--text-secondary);
+        color: #fff;
+      }
+
+      .muted {
+        opacity: 0.75;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        z-index: 1000;
+      }
+
+      .modal-card {
+        width: min(420px, 100%);
+        background: var(--bg-secondary);
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      }
+
+      .modal-title {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+      }
+
+      .modal-message {
+        margin-bottom: 12px;
+        line-height: 1.5;
+        opacity: 0.9;
+      }
+
+      .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .modal-action-btn {
+        border: none;
+        border-radius: 6px;
+        padding: 8px 12px;
+        background: var(--text-secondary);
+        color: white;
+        cursor: pointer;
+      }
+
+      .modal-action-btn.secondary {
+        background: var(--bg-tertiary);
+        color: inherit;
       }
 
       .study-time-display {
@@ -365,6 +558,18 @@
     </style>
   </head>
   <body>
+    <div class="modal-overlay hidden" id="app-modal">
+      <div class="modal-card" role="dialog" aria-modal="true">
+        <h3 class="modal-title" id="modal-title">提示</h3>
+        <p class="modal-message" id="modal-message"></p>
+        <input class="inline-input modal-input hidden" id="modal-input" />
+        <div class="modal-actions">
+          <button class="modal-action-btn secondary modal-cancel-btn" type="button">取消</button>
+          <button class="modal-action-btn modal-confirm-btn" type="button">确认</button>
+        </div>
+      </div>
+    </div>
+
     <div class="container">
       <h1 class="title">🎓🍅♨️</h1>
 
@@ -377,9 +582,24 @@
             <button class="btn confirm-btn" style="display: none">☑️</button>
             <button class="btn cancel-btn" style="display: none">❎</button>
           </div>
-          <!-- <div class="controls"> -->
-          <!-- TODO: 实现“📄（导出数据文件）、⚙️（应用数据文件）和 🏠（[源码](https://github.com/PJ-568/time-of-studying)）”数据管理按钮和相关功能 -->
-          <!-- </div> -->
+        </div>
+
+        <div class="mode-switch">
+          <button class="mode-btn active" data-mode="timer">&#x5B9A;&#x65F6;&#x63D0;&#x9192;</button>
+          <button class="mode-btn" data-mode="focus">&#x4E13;&#x6CE8;&#x7D2F;&#x8BA1;</button>
+        </div>
+
+        <div class="focus-panel">
+          <div class="panel-title">
+            <span>🧩 &#x4E13;&#x6CE8;&#x9879;&#x76EE;</span>
+            <button class="btn add-project-btn">➕</button>
+          </div>
+          <div class="status-bar" id="focus-status">&#x5F53;&#x524D;&#x672A;&#x5F00;&#x59CB;&#x4E13;&#x6CE8;</div>
+          <div class="project-list" id="project-list"></div>
+          <div class="controls">
+            <button class="btn start-focus-btn" title="开始专注">▶️</button>
+            <button class="btn stop-focus-btn" title="结束本次专注">⏹️</button>
+          </div>
         </div>
 
         <div class="timer-container">
@@ -419,26 +639,98 @@
       </div>
     </div>
 
+    <script src="./app-logic.js"></script>
     <script>
+      function showAppModal({ title, message, input = false, initialValue = "", confirmText = "确认", cancelText = "取消" }) {
+        return new Promise((resolve) => {
+          const overlay = document.getElementById("app-modal");
+          const titleEl = document.getElementById("modal-title");
+          const messageEl = document.getElementById("modal-message");
+          const inputEl = document.getElementById("modal-input");
+          const cancelBtn = document.querySelector(".modal-cancel-btn");
+          const confirmBtn = document.querySelector(".modal-confirm-btn");
+
+          const finish = (value) => {
+            overlay.classList.add("hidden");
+            inputEl.classList.add("hidden");
+            inputEl.value = "";
+            cancelBtn.onclick = null;
+            confirmBtn.onclick = null;
+            overlay.onclick = null;
+            inputEl.onkeydown = null;
+            resolve(value);
+          };
+
+          titleEl.textContent = title;
+          messageEl.textContent = message;
+          inputEl.classList.toggle("hidden", !input);
+          inputEl.value = initialValue;
+          cancelBtn.textContent = cancelText;
+          confirmBtn.textContent = confirmText;
+          overlay.classList.remove("hidden");
+
+          cancelBtn.onclick = () => finish(null);
+          confirmBtn.onclick = () => finish(input ? inputEl.value : true);
+          overlay.onclick = (event) => {
+            if (event.target === overlay) {
+              finish(null);
+            }
+          };
+          inputEl.onkeydown = (event) => {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              finish(input ? inputEl.value : true);
+            }
+          };
+
+          if (input) {
+            inputEl.focus();
+            inputEl.select();
+          }
+        });
+      }
+
+      async function showAppConfirm(message) {
+        const result = await showAppModal({
+          title: "确认",
+          message,
+          input: false,
+          confirmText: "确认",
+          cancelText: "取消",
+        });
+        return result === true;
+      }
+
       // 数据管理
       const dataManager = {
         // 初始化数据
         init() {
-          const data = localStorage.getItem("timerData");
-          if (data) {
-            return JSON.parse(data);
-          } else {
-            return {
-              totalStudyTime: 0,
-              pomodoroTime: 1500, // 25 分钟
-              idleTime: 300, // 5 分钟
-            };
+          const raw = localStorage.getItem("timerData");
+          let parsed = null;
+          try {
+            parsed = raw ? JSON.parse(raw) : null;
+          } catch (error) {
+            parsed = null;
           }
+          const data = AppLogic.normalizeState(parsed);
+          data.totalStudyTime = Number(data.totalStudyTime) || 0;
+          data.pomodoroTime = Number(data.pomodoroTime) || 1500;
+          data.idleTime = Number(data.idleTime) || 300;
+          data.timer.duration = Number(data.timer.duration) || data.pomodoroTime;
+          data.timer.remaining = Number(data.timer.remaining) || data.timer.duration;
+          return data;
         },
 
         // 保存数据
         save(data) {
-          localStorage.setItem("timerData", JSON.stringify(data));
+          const normalized = AppLogic.normalizeState(data);
+          normalized.totalStudyTime = Number(normalized.totalStudyTime) || 0;
+          normalized.pomodoroTime = Number(normalized.pomodoroTime) || 1500;
+          normalized.idleTime = Number(normalized.idleTime) || 300;
+          normalized.timer.duration = Number(normalized.timer.duration) || normalized.pomodoroTime;
+          normalized.timer.remaining = Number(normalized.timer.remaining) || normalized.timer.duration;
+          localStorage.setItem("timerData", JSON.stringify(normalized));
+          return normalized;
         },
 
         // 格式化时间（秒转 HH:MM）
@@ -606,10 +898,8 @@
           // 将已进行的时间加入总学习时长
           const elapsed = this.totalTime - this.remainingTime;
           this.data.totalStudyTime += elapsed;
-          dataManager.save(this.data);
-          studyTimeManager.display.textContent = dataManager.formatTime(
-            this.data.totalStudyTime
-          );
+          this.data = dataManager.save(this.data);
+          studyTimeManager.refresh();
 
           // 重置计时器
           this.remainingTime = this.totalTime;
@@ -630,10 +920,8 @@
 
           // 将全部时间加入总学习时长
           this.data.totalStudyTime += this.totalTime;
-          dataManager.save(this.data);
-          studyTimeManager.display.textContent = dataManager.formatTime(
-            this.data.totalStudyTime
-          );
+          this.data = dataManager.save(this.data);
+          studyTimeManager.refresh();
 
           // 重置计时器
           this.remainingTime = this.totalTime;
@@ -885,6 +1173,261 @@
         }
       }
 
+      class FocusManager {
+        constructor() {
+          this.state = dataManager.init();
+          this.listEl = document.getElementById("project-list");
+          this.statusEl = document.getElementById("focus-status");
+          this.historyEl = document.getElementById("focus-history");
+          this.focusPanel = document.querySelector(".focus-panel");
+          this.timerContainer = document.querySelector(".timer-container");
+          this.statsEls = {
+            day: document.querySelector('[data-period="day"]'),
+            week: document.querySelector('[data-period="week"]'),
+            month: document.querySelector('[data-period="month"]'),
+            year: document.querySelector('[data-period="year"]'),
+          };
+          this.startBtn = document.querySelector(".start-focus-btn");
+          this.stopBtn = document.querySelector(".stop-focus-btn");
+          this.addBtn = document.querySelector(".add-project-btn");
+          this.modeBtns = Array.from(document.querySelectorAll(".mode-btn"));
+          this.tickHandle = null;
+          this.init();
+        }
+
+        init() {
+          this.render();
+          this.bindEvents();
+        }
+
+        bindEvents() {
+          this.addBtn.addEventListener("click", async () => {
+            const name = await showAppModal({
+              title: "新建任务",
+              message: "请输入任务名称",
+              input: true,
+              initialValue: "新任务",
+              confirmText: "创建",
+            });
+            if (!name) {
+              return;
+            }
+            AppLogic.createProject(this.state, name);
+            this.persist();
+            this.render();
+          });
+
+          this.startBtn.addEventListener("click", () => {
+            const active = AppLogic.getActiveProject(this.state);
+            if (!active) {
+              alert("\u8bf7\u5148\u521b\u5efa\u4e00\u4e2a\u9879\u76ee");
+              return;
+            }
+            if (this.state.focus.isRunning) {
+              return;
+            }
+            const confirmMessage = `\u786e\u8ba4\u5f00\u59cb\u4e3a\u201c${active.name}\u201d\u7d2f\u8ba1\u4e13\u6ce8\u65f6\u95f4\u5417\uff1f\n\u5f00\u59cb\u540e\u5c06\u4ee5\u9759\u9ed8\u65b9\u5f0f\u8bb0\u5f55\u65f6\u957f\u3002`;
+            if (!window.confirm(confirmMessage)) {
+              return;
+            }
+            this.state.focus.isRunning = true;
+            this.state.focus.runningSince = Date.now();
+            this.state.focus.lastUpdated = Date.now();
+            this.state.focus.currentSessionSeconds = 0;
+            this.startTick();
+            this.persist();
+            this.render();
+          });
+
+          this.stopBtn.addEventListener("click", () => {
+            this.finishSession();
+          });
+
+          this.modeBtns.forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const nextMode = btn.dataset.mode;
+              if (nextMode === "focus") {
+                this.state.mode = "focus";
+              } else {
+                this.state.mode = "timer";
+              }
+              this.persist();
+              this.render();
+            });
+          });
+        }
+
+        startTick() {
+          if (this.tickHandle) {
+            clearInterval(this.tickHandle);
+          }
+          this.tickHandle = setInterval(() => {
+            if (!this.state.focus.isRunning || !this.state.focus.runningSince) {
+              return;
+            }
+            this.state.focus.currentSessionSeconds = Math.floor((Date.now() - this.state.focus.runningSince) / 1000);
+            this.render();
+          }, 1000);
+        }
+
+        stopTick() {
+          if (this.tickHandle) {
+            clearInterval(this.tickHandle);
+            this.tickHandle = null;
+          }
+        }
+
+        finishSession() {
+          if (!this.state.focus.isRunning) {
+            return;
+          }
+          const active = AppLogic.getActiveProject(this.state);
+          const elapsed = Math.max(1, Math.floor((Date.now() - this.state.focus.runningSince) / 1000));
+          if (active) {
+            AppLogic.addElapsedToProject(this.state, active.id, elapsed);
+            AppLogic.recordFocusSession(this.state, active.id, active.name, this.state.focus.runningSince, Date.now(), elapsed);
+            this.state.totalStudyTime += elapsed;
+          }
+          this.state.focus.isRunning = false;
+          this.state.focus.runningSince = null;
+          this.state.focus.currentSessionSeconds = 0;
+          this.stopTick();
+          this.persist();
+          this.render();
+        }
+
+        persist() {
+          this.state = dataManager.save(this.state);
+          if (typeof studyTimeManager !== "undefined") {
+            studyTimeManager.refresh();
+          }
+        }
+
+        render() {
+          this.modeBtns.forEach((btn) => {
+            btn.classList.toggle("active", btn.dataset.mode === this.state.mode);
+          });
+
+          if (this.focusPanel) {
+            this.focusPanel.classList.toggle("hidden", this.state.mode !== "focus");
+          }
+          if (this.timerContainer) {
+            this.timerContainer.classList.toggle("hidden", this.state.mode !== "timer");
+          }
+
+          this.listEl.innerHTML = "";
+          this.state.focus.projects.forEach((project) => {
+            const isActive = project.id === this.state.focus.activeProjectId;
+            const displaySeconds = this.state.focus.isRunning && isActive
+              ? this.state.focus.currentSessionSeconds
+              : project.totalSeconds;
+            const item = document.createElement("div");
+            item.className = `project-item${isActive ? " active" : ""}`;
+            item.innerHTML = `
+              <div class="name">${project.name}</div>
+              <div class="meta">${AppLogic.formatDuration(displaySeconds)}</div>
+            `;
+            item.addEventListener("click", () => {
+              if (this.state.focus.isRunning && this.state.focus.activeProjectId !== project.id) {
+                const current = AppLogic.getActiveProject(this.state);
+                if (!window.confirm(`\u5f53\u524d\u9879\u76ee\u201c${current?.name || "\u672a\u547d\u540d"}\u201d\u5df2\u5728\u7d2f\u8ba1\uff0c\u5207\u6362\u5c06\u7ed3\u675f\u672c\u6b21\u8bb0\u5f55\uff0c\u662f\u5426\u7ee7\u7eed\uff1f`)) {
+                  return;
+                }
+                this.finishSession();
+              }
+              this.state.focus.activeProjectId = project.id;
+              this.persist();
+              this.render();
+            });
+            const actionWrap = document.createElement("div");
+            actionWrap.className = "project-actions";
+            const renameBtn = document.createElement("button");
+            renameBtn.textContent = "✏️";
+            renameBtn.className = "btn";
+            renameBtn.addEventListener("click", (event) => {
+              event.stopPropagation();
+              const nextName = prompt("\u8bf7\u8f93\u5165\u65b0\u9879\u76ee\u540d\u79f0", project.name);
+              if (!nextName) {
+                return;
+              }
+              AppLogic.renameProject(this.state, project.id, nextName);
+              this.persist();
+              this.render();
+            });
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "🗑️";
+            deleteBtn.className = "btn";
+            deleteBtn.addEventListener("click", (event) => {
+              event.stopPropagation();
+              if (!window.confirm(`\u786e\u8ba4\u5220\u9664\u9879\u76ee\u201c${project.name}\u201d\u5417\uff1f`)) {
+                return;
+              }
+              AppLogic.removeProject(this.state, project.id);
+              this.persist();
+              this.render();
+            });
+            actionWrap.appendChild(renameBtn);
+            actionWrap.appendChild(deleteBtn);
+            item.appendChild(actionWrap);
+            this.listEl.appendChild(item);
+          });
+
+          const active = AppLogic.getActiveProject(this.state);
+          if (active) {
+            const elapsedSeconds = this.state.focus.isRunning
+              ? this.state.focus.currentSessionSeconds
+              : active.totalSeconds;
+            this.statusEl.textContent = this.state.focus.isRunning
+              ? `⏳ 正在专注：${active.name}（${AppLogic.formatDuration(elapsedSeconds)}）`
+              : `当前项目：${active.name}（${AppLogic.formatDuration(active.totalSeconds)}）`;
+          } else {
+            this.statusEl.textContent = "当前未开始专注";
+          }
+
+          const summary = AppLogic.summarizeFocusHistory(this.state.focus.history, {
+            referenceDate: new Date(),
+            projectId: active ? active.id : null,
+          });
+          if (this.statsEls.day) {
+            this.statsEls.day.textContent = AppLogic.formatDuration(summary.day);
+          }
+          if (this.statsEls.week) {
+            this.statsEls.week.textContent = AppLogic.formatDuration(summary.week);
+          }
+          if (this.statsEls.month) {
+            this.statsEls.month.textContent = AppLogic.formatDuration(summary.month);
+          }
+          if (this.statsEls.year) {
+            this.statsEls.year.textContent = AppLogic.formatDuration(summary.year);
+          }
+
+          if (this.historyEl) {
+            const recentRecords = (this.state.focus.history || []).slice(0, 5);
+            this.historyEl.innerHTML = recentRecords.length
+              ? recentRecords.map((entry) => {
+                  const timeLabel = entry.startedAt
+                    ? new Date(entry.startedAt).toLocaleString("zh-CN", {
+                        month: "numeric",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })
+                    : "刚刚";
+                  return `<div class="recent-item"><span>${entry.projectName || "项目"}</span><span>${AppLogic.formatDuration(entry.durationSeconds)} · ${timeLabel}</span></div>`;
+                }).join("")
+              : '<div class="recent-item"><span>暂无专注记录</span><span>—</span></div>';
+          }
+
+          if (this.state.focus.isRunning) {
+            this.startBtn.textContent = "⏸️";
+            this.stopBtn.textContent = "⏹️";
+          } else {
+            this.startBtn.textContent = "▶️";
+            this.stopBtn.textContent = "⏹️";
+          }
+        }
+      }
+
       // 总学习时长控制器
       class StudyTimeManager {
         constructor() {
@@ -899,12 +1442,8 @@
         }
 
         init() {
-          // 初始化显示
-          this.display.textContent = dataManager.formatTime(
-            this.data.totalStudyTime
-          );
+          this.render();
 
-          // 事件监听
           this.clearBtn.addEventListener("click", () =>
             this.showConfirmDialog()
           );
@@ -914,6 +1453,17 @@
           this.cancelBtn.addEventListener("click", () =>
             this.hideConfirmDialog()
           );
+        }
+
+        render() {
+          this.display.textContent = dataManager.formatTime(
+            this.data.totalStudyTime
+          );
+        }
+
+        refresh() {
+          this.data = dataManager.init();
+          this.render();
         }
 
         showConfirmDialog() {
@@ -933,8 +1483,8 @@
         clearStudyTime() {
           // 清空学习时长
           this.data.totalStudyTime = 0;
-          dataManager.save(this.data);
-          this.display.textContent = dataManager.formatTime(0);
+          this.data = dataManager.save(this.data);
+          this.render();
 
           // 隐藏确认和取消按钮，显示清空按钮
           this.hideConfirmDialog();
@@ -944,6 +1494,7 @@
       // 初始化应用
       const data = dataManager.init();
       const studyTimeManager = new StudyTimeManager();
+      const focusManager = new FocusManager();
 
       // 初始化番茄钟
       const pomodoroElement = document.querySelector(".pomodoro");
