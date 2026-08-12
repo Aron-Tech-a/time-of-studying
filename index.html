@@ -932,7 +932,7 @@
       @media (min-width: 1200px) {
         .container {
           display: grid;
-          grid-template-columns: 2fr 1fr;
+          grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
           grid-template-rows: auto 1fr 1fr;
           gap: 20px;
           transition: var(--transition-base);
@@ -942,9 +942,24 @@
           grid-column: 1 / -1;
         }
 
+        .mode-switch {
+          grid-column: 1;
+          grid-row: 2;
+          justify-self: start;
+          align-self: start;
+          transition: var(--transition-base);
+        }
+
+        .focus-panel {
+          grid-column: 1;
+          grid-row: 3 / 4;
+          align-self: stretch;
+          transition: var(--transition-base);
+        }
+
         .pomodoro {
           grid-row: 2 / 4;
-          grid-column: 1;
+          grid-column: 2;
           transition: var(--transition-base);
         }
 
