@@ -123,6 +123,7 @@
         display: flex;
         flex-direction: column;
         gap: 20px;
+        align-items: stretch;
       }
 
       /* 总学习时长 */
@@ -671,24 +672,25 @@
 
       .mode-switch {
         display: inline-flex;
-        gap: 6px;
+        gap: 4px;
         justify-content: flex-start;
         align-self: flex-start;
         width: fit-content;
-        padding: 4px;
+        padding: 3px;
         border-radius: 999px;
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(96, 165, 250, 0.14);
+        margin-top: -2px;
       }
 
       .mode-btn {
-        padding: 6px 10px;
+        padding: 4px 8px;
         border-radius: 999px;
         border: none;
         background: transparent;
         color: inherit;
-        font-size: 0.84rem;
-        min-height: 30px;
+        font-size: 0.8rem;
+        min-height: 24px;
         line-height: 1;
       }
 
@@ -766,10 +768,11 @@
 
       /* 番茄钟和空闲钟容器 */
       .timer-container {
-        flex: 1;
+        flex: 1 1 auto;
         display: flex;
         flex-direction: column;
         gap: 20px;
+        min-height: 0;
       }
 
       /* 番茄钟 */
@@ -777,7 +780,7 @@
         background-color: var(--bg-secondary);
         border-radius: 8px;
         padding: 20px;
-        flex: 2;
+        flex: 0 0 auto;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -791,7 +794,7 @@
         background-color: var(--bg-secondary);
         border-radius: 8px;
         padding: 20px;
-        flex: 1;
+        flex: 0 0 auto;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -928,6 +931,7 @@
       @media (min-width: 768px) {
         .content {
           flex-direction: row;
+          align-items: flex-start;
           transition: flex-direction 0.3s ease;
         }
 
