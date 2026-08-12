@@ -144,6 +144,10 @@
       }
 
       .focus-panel {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
         background: linear-gradient(145deg, rgba(17, 28, 46, 0.98), rgba(20, 36, 59, 0.95));
         border-radius: 16px;
         padding: 20px;
@@ -967,7 +971,7 @@
         }
 
         .focus-panel {
-          grid-column: 1;
+          grid-column: 1 / -1;
           grid-row: 4;
           align-self: stretch;
           transition: var(--transition-base);
