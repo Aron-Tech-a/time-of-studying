@@ -507,8 +507,8 @@
 
       .stats-tabs {
         display: flex;
-        gap: 8px;
-        padding: 4px;
+        gap: 4px;
+        padding: 3px;
         border-radius: 999px;
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(96, 165, 250, 0.14);
@@ -516,13 +516,13 @@
 
       .stats-tab {
         flex: 1;
-        padding: 7px 10px;
+        padding: 6px 8px;
         border-radius: 999px;
         border: none;
         background: transparent;
         color: inherit;
         cursor: pointer;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         transition: var(--transition-base);
       }
 
@@ -656,22 +656,32 @@
       }
 
       .mode-switch {
-        display: flex;
-        gap: 8px;
-        justify-content: center;
+        display: inline-flex;
+        gap: 6px;
+        justify-content: flex-start;
+        align-self: flex-start;
+        width: fit-content;
+        padding: 4px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(96, 165, 250, 0.14);
       }
 
       .mode-btn {
-        padding: 8px 12px;
+        padding: 6px 10px;
         border-radius: 999px;
-        border: 1px solid var(--border-primary);
-        background: var(--bg-primary);
+        border: none;
+        background: transparent;
         color: inherit;
+        font-size: 0.84rem;
+        min-height: 30px;
+        line-height: 1;
       }
 
       .mode-btn.active {
-        background: var(--text-secondary);
+        background: linear-gradient(135deg, var(--text-secondary), var(--text-accent-2));
         color: #fff;
+        box-shadow: 0 4px 10px rgba(76, 175, 80, 0.16);
       }
 
       .muted {
