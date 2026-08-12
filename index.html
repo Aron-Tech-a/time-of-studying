@@ -139,6 +139,10 @@
         justify-content: center;
       }
 
+      .study-time.is-hidden {
+        display: none;
+      }
+
       .focus-panel {
         background: linear-gradient(145deg, rgba(17, 28, 46, 0.98), rgba(20, 36, 59, 0.95));
         border-radius: 16px;
@@ -1783,9 +1787,15 @@
         }
 
         render() {
+          const studyTimeEl = document.querySelector(".study-time");
+
           this.modeBtns.forEach((btn) => {
             btn.classList.toggle("active", btn.dataset.mode === this.state.mode);
           });
+
+          if (studyTimeEl) {
+            studyTimeEl.classList.toggle("is-hidden", this.state.mode === "focus");
+          }
 
           if (this.focusPanel) {
             this.focusPanel.classList.toggle("hidden", this.state.mode !== "focus");
