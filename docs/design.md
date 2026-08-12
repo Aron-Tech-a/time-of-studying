@@ -183,3 +183,32 @@
 ## 8. 结论
 
 当前版本已经从一个简单的番茄钟工具演进为一个“番茄计时 + 专注任务管理 + 统计反馈”的轻量效率仪表盘。文档已根据现有代码执行了同步更新，重点覆盖了新增的专注累计模式、状态数据结构、任务管理流程和视觉交互。
+
+## 9. 代码框架（Mermaid）
+
+```mermaid
+flowchart TD
+    A[浏览器页面 index.html] --> B[UI 结构层]
+    A --> C[状态与数据层]
+    A --> D[计时器控制层]
+    A --> E[PWA 与生命周期层]
+
+    B --> B1[总学习时长卡片]
+    B --> B2[模式切换按钮]
+    B --> B3[专注累计面板]
+    B --> B4[番茄钟面板]
+    B --> B5[空闲钟面板]
+
+    C --> C1[dataManager]
+    C --> C2[localStorage timerData]
+    C --> C3[AppLogic.normalizeState]
+
+    D --> D1[PomodoroTimer]
+    D --> D2[IdleTimer]
+    D --> D3[FocusManager]
+    D --> D4[StudyTimeManager]
+
+    E --> E1[Service Worker]
+    E --> E2[安装提示]
+    E --> E3[页面可见性与离开提醒]
+```
