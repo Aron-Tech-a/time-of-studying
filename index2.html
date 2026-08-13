@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>布局示例 - index2</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --panel: #111c2e;
+        --panel-2: #14243b;
+        --text: #e5eefc;
+        --accent: #5eead4;
+        --accent-2: #60a5fa;
+        --border: #23364f;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: linear-gradient(135deg, #0f172a, #111827);
+        color: var(--text);
+      }
+
+      .page {
+        min-height: 100vh;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 8px 0;
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 24px;
+        letter-spacing: 2px;
+      }
+
+      .content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .main-layout {
+        display: flex;
+        gap: 16px;
+        flex: 1;
+      }
+
+      .layout-a,
+      .layout-b {
+        min-width: 0;
+      }
+
+      .layout-a {
+        flex: 1.1;
+        display: flex;
+      }
+
+      .layout-b {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .layout-c,
+      .layout-d {
+        flex: 1;
+        display: flex;
+      }
+
+      .panel {
+        width: 100%;
+        border-radius: 16px;
+        padding: 20px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+      }
+
+      .panel h2 {
+        margin: 0 0 10px;
+        font-size: 18px;
+      }
+
+      .tomato-clock {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 300px;
+        background: linear-gradient(145deg, var(--panel), var(--panel-2));
+        text-align: center;
+      }
+
+      .circle {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        border: 10px solid var(--accent);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 14px 0;
+        font-size: 34px;
+        font-weight: bold;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 10px;
+      }
+
+      button {
+        border: none;
+        border-radius: 999px;
+        padding: 8px 14px;
+        cursor: pointer;
+        color: white;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      }
+
+      .study-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(145deg, var(--panel), var(--panel-2));
+      }
+
+      .time-value {
+        font-size: 40px;
+        font-weight: bold;
+        margin: 12px 0;
+      }
+
+      .focus-card {
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(145deg, var(--panel), var(--panel-2));
+        gap: 10px;
+      }
+
+      .list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 6px;
+      }
+
+      .item {
+        background: rgba(255,255,255,0.06);
+        padding: 8px 10px;
+        border-radius: 8px;
+      }
+
+      @media (max-width: 900px) {
+        .main-layout {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <h1>🎓🍅♨️</h1>
+      </header>
+
+      <div class="content">
+        <div class="main-layout">
+          <section class="layout-a">
+            <div class="panel tomato-clock">
+              <h2>番茄时钟</h2>
+              <div class="circle">25:00</div>
+              <div class="buttons">
+                <button>开始</button>
+                <button>暂停</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="layout-b">
+            <div class="layout-c">
+              <div class="panel study-card">
+                <h2>学习时长</h2>
+                <div class="time-value">0:00</div>
+                <div class="buttons">
+                  <button>清空</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="layout-d">
+              <div class="panel focus-card">
+                <h2>专注项目</h2>
+                <div>今日累计：0:00</div>
+                <div class="list">
+                  <div class="item">任务一 · 25 分钟</div>
+                  <div class="item">任务二 · 15 分钟</div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
